@@ -3,7 +3,7 @@ import { styled, createGlobalStyle } from 'styled-components'
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Neutra';
-    src: url(fonts/neutra.otf) format('opentype');
+    src: url(/fonts/neutra.otf) format('opentype');
 
   }
 
