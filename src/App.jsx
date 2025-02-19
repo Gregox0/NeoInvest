@@ -73,6 +73,8 @@ const InputContainer = styled.div`
 const P = styled.p`
   span{
     color: #0A5DA6;
+
+    cursor: pointer;
   }
 `
 
@@ -91,10 +93,11 @@ const Container = styled.div`
 const InputCheckbox = styled.div`
   display: flex;
   align-items: center;
-  gap: 5px;
   
-  input[type="checkbox"] {
-    margin: 0;
+  gap: 5px;
+
+  input{
+    cursor: pointer;
   }
 `
 function App() {
@@ -108,12 +111,12 @@ function App() {
       <StyledContainer>
         <InputContainer>
           <Input
-            placeholder = 'Digite seu nome'
             type = 'text'
+            label = 'Nome'
           />
           <Input
-            placeholder = 'Digite sua senha'  
             type = 'password'
+            label = 'Senha'
           />
         </InputContainer>
         <Container>

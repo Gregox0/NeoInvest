@@ -1,7 +1,14 @@
+import styled from 'styled-components'
+const P = styled.p`
+  color: #0A5DA6;
+
+  cursor: pointer;
+`
+
 export default function ForgotPassword(){
   return(
     <>
-      <p>Equeceu a senha? </p>
+      <P>Equeceu a senha? </P>
     </>
   )
 }

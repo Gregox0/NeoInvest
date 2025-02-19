@@ -39,19 +39,25 @@ const StyledInput = styled.input`
   outline: none;
   background-color: transparent;
 `
+const StyledLabel = styled.label`
+  margin: 5px;
 
-export default function Input({ placeholder, type, onChange, value }) {
+  position: absolute;
+
+  z-index: 3;
+`
+export default function Input({ type, onChange, value, label }) {
   const [isFocused, setIsFocused] = useState(false)
 
   return (
     <StyledContainer>
       <Line $isFocused={isFocused} />
+      <StyledLabel> { label } </StyledLabel>
       <InputContainer>
         <StyledInput
           value={value}
           onChange={onChange}
           type = { type }
-          placeholder={placeholder}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         />
