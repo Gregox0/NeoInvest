@@ -77,14 +77,21 @@ const P = styled.p`
 `
 
 const Container = styled.div`
+  margin: 10px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  width: 250px;
 
   font-size: 12px;
 `
 
 const InputCheckbox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 function App() {
   return (
