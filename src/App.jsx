@@ -1,5 +1,9 @@
 import { styled, createGlobalStyle } from 'styled-components'
 
+import Input from './components/Input'
+import Button from './components/Button'
+import ForgotPassword from './components/ForgotPassword'
+
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Neutra';
@@ -15,6 +19,8 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    font-family: 'Neutra';
   }
 
   body {
@@ -27,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
 
     background-color: #1E1F20;
   }
-`;
+`
 
 const StyledTitle = styled.div`
   height: 20vh;
@@ -40,23 +46,45 @@ const StyledTitle = styled.div`
   gap: 15px;
 
   h1{
-    color: #F0F2EF;
-    font-family: 'Neutra'
+    color: #fff;
   }
   img{
     height: 65px;
     width: 65px;
   }
-`;
+`
 
 const StyledContainer = styled.div`
   height: 80vh;
   width: 100vw;
 
-  background-color: #F0F2EF;
-  border-radius: 30px 30px 0 0;
-`;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
+  background-color: #fff;
+  border-radius: 30px 30px 0 0;
+`
+
+const InputContainer = styled.div`
+  margin-top: 10%;
+`
+
+const P = styled.p`
+  span{
+    color: #0A5DA6;
+  }
+`
+
+const InputCheckbox = styled.div`
+`
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 12px;
+`
 function App() {
   return (
     <>
@@ -66,9 +94,30 @@ function App() {
         <img src="imgs/logo.png" alt="Logo" width="100" />
       </StyledTitle>
       <StyledContainer>
+        <InputContainer>
+          <Input
+            placeholder = 'Digite seu nome'
+            type = 'text'
+          />
+          <Input
+            placeholder = 'Digite sua senha'  
+            type = 'password'
+          />
+        </InputContainer>
+        <Container>
+          <InputCheckbox>
+            <label>Lembrar de mim</label>
+            <input type="checkbox" />
+          </InputCheckbox>
+          <ForgotPassword/>
+        </Container>
+        <Button
+          text = 'Entrar'  
+        />
+        <P>Ainda não tem uma conta? <span>Clique aqui</span></P>
       </StyledContainer>
     </>
-  );
+  )
 }
 
-export default App;
+export default App
