@@ -91,7 +91,11 @@ const Container = styled.div`
 const InputCheckbox = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 5px;
+  
+  input[type="checkbox"] {
+    margin: 0;
+  }
 `
 function App() {
   return (
