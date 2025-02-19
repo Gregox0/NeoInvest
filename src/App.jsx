@@ -76,14 +76,15 @@ const P = styled.p`
   }
 `
 
-const InputCheckbox = styled.div`
-`
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   font-size: 12px;
+`
+
+const InputCheckbox = styled.div`
 `
 function App() {
   return (
