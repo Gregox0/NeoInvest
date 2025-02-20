@@ -3,7 +3,7 @@ import { useState } from "react"
 import styled from "styled-components"
 
 const StyledContainer = styled.div`
-  margin-top: 15px;
+  margin-bottom: 15px;
   position: relative;
   
   display: flex;
@@ -43,7 +43,7 @@ const StyledInput = styled.input`
 
 const StyledLabel = styled.label`
   position: absolute;
-  left: 17px;
+
   background-color: #fff;
   padding: 0 5px;
   transition: all 0.2s ease-in-out;
@@ -53,7 +53,7 @@ const StyledLabel = styled.label`
   ${({ $isFocused, $hasValue }) =>
     ($isFocused || $hasValue) &&
     `
-    transform: translateY(-20px);
+    transform: translateY(-15px);
     font-size: 12px;
     color: #0A5DA6;
   `}
