@@ -36,7 +36,7 @@ const StyledTitle = styled.div`
 
   gap: 15px;
 
-  background-color: #;
+  background-color: #1E1F20;
 
   h1{
     color: #fff;
