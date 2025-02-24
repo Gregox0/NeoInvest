@@ -3,14 +3,13 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBCv2SKreONfqbsD3-_Ay0RWXQTN9Br59E",
-    authDomain: "neoinvest-e2902.firebaseapp.com",
-    projectId: "neoinvest-e2902",
-    storageBucket: "neoinvest-e2902.firebasestorage.app",
-    messagingSenderId: "215843745485",
-    appId: "1:215843745485:web:ce2c86502f27d7f8aa0384",
-    measurementId: "G-5BJHVTMP62"
-  }
+  aapiKey: "AIzaSyCMz4tVNWPVkqasAUW6l9s1hpNVTPtJQms",
+  authDomain: "neoinvest-41343.firebaseapp.com",
+  projectId: "neoinvest-41343",
+  storageBucket: "neoinvest-41343.firebasestorage.app",
+  messagingSenderId: "234512209194",
+  appId: "1:234512209194:web:03388c280ab73e6cbeba53"
+}
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
