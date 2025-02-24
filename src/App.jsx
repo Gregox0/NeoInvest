@@ -58,7 +58,7 @@ const StyledTitle = styled.div`
     height: 60vh;
 
     border-radius: 30px 0 0 30px;
-
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3)
   }
 `
 
@@ -194,7 +194,7 @@ function App() {
       const UserCredential = await signInWithEmailAndPassword(auth, data.email, data.senha)
 
       toggleLoading()
-      navigate('/teste')
+      navigate('/ConteMais')
     }
     catch(error){
       toggleLoading()
@@ -218,8 +218,6 @@ function App() {
         name: data.nome,
         email: data.email,
       })
-
-      console.log('cadastrado')
       toggle()
       toggleLoading()
     } 
@@ -245,7 +243,7 @@ function App() {
           if (!querySnapshot.empty) {
             onAuthStateChanged(auth, (user) => {
               if(user){
-                navigate('/teste')
+                navigate('/ConteMais')
               }
             })
           }
