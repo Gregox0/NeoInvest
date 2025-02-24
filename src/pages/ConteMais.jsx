@@ -4,12 +4,12 @@ import { useState } from 'react'
 import Input from '../components/Input'
 import Table from '../components/Table'
 import Button from '../components/Button'
+import Loading from '../components/Loading'
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Neutra';
     src: url(/fonts/neutra.otf) format('opentype');
-
   }
 
   @font-face {
@@ -27,46 +27,69 @@ const GlobalStyle = createGlobalStyle`
 
 const Side = styled.div`
     margin: 5%;
-
     width: 250px;
 `
+
 const ASide = styled.div`
     margin-top: 5%;
     width: 500px;
 `
+
 const Title = styled.div`
     margin-bottom: 20px;
 `
+
 const StyledContainer = styled.div`
     height: 100vh;
     width: 100vw;
-
     display: flex;
     justify-content: center;
 `
+
 const Cad = styled.div`
     margin-bottom: 20px;
-
 `
-export default function Teste(){
+
+export default function Teste() {
+    const [loading, setLoading] = useState(false)
+
     const [ticker, setTicker] = useState('')
+    const [dados, setDados] = useState({
+        th: ["Empresa", "Ticket", 'Preço', 'Variação'],
+        tb: []
+    })
 
     const handleSubmit = async () => {
+        setLoading(true)
         try {
-          const response = await fetch(`http://localhost:5555/stock/${ticker}`)
-          const data = await response.json()
-          console.log(data)
+            const response = await fetch(`http://localhost:5555/stock/${ticker}`)
+            const data = await response.json()
+            console.log(data)
+
+
+            setDados(prevState => ({
+                ...prevState,
+                tb: [
+                    ...prevState.tb,
+                    {
+                        empresa: data.companyName, 
+                        ticket: data.symbol,
+                        preco: data.currentPrice,
+                        variacao: data.appreciation
+                    }
+                ]
+            }))
+            setLoading(false)
         } catch (error) {
-          console.error('Erro ao buscar dados da ação:', error)
+            setLoading(false)
+            console.error('Erro ao buscar dados da ação:', error)
         }
     }
-    const dados = {
-        th: ["Empresa", "Ticket", 'Preço', 'Variação'], 
-        tb: []
-    }
-    return(
+
+    return (
         <StyledContainer>
-            <GlobalStyle/>
+            <GlobalStyle />
+            {loading && (<Loading/>)}
             <Side>
                 <Title>
                     <h1>Nós conte mais</h1>
@@ -74,17 +97,16 @@ export default function Teste(){
                 </Title>
                 <Cad>
                     <Input
-                        label = 'Ticket'
-                        type = 'text'
-                        value = {ticker}
-                        onChange = {(e) => setTicker(e.target.value)}
+                        label='Ticket'
+                        type='text'
+                        value={ticker}
+                        onChange={(e) => setTicker(e.target.value)}
                     />
-
                 </Cad>
-                <Button text = 'Próximo' onClick={handleSubmit}/>
+                <Button text='Próximo' onClick={handleSubmit} />
             </Side>
             <ASide>
-                <Table dados = {dados}/>
+                <Table dados={dados} />
             </ASide>
         </StyledContainer>
     )
