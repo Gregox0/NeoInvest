@@ -8,6 +8,11 @@ import ForgotPassword from './components/ForgotPassword'
 import Google from './components/icons/Google'
 import Twitter from './components/icons/Twitter'
 
+import { auth,db } from './firebase.js'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc, getDoc } from "firebase/firestore";
+
 const GlobalStyle = createGlobalStyle`
   @font-face {
     font-family: 'Neutra';
@@ -133,6 +138,8 @@ function App() {
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
+
+  let data
   
   const toggle = () => setIsCad(prev => !prev)
 
@@ -153,15 +160,51 @@ function App() {
       return
     }
     if(isCad){
-      const data = {
+      data = {
         nome: nome,
         email: email,
         senha: senha
       }
     }else{
-      const data = {
+      data = {
         nome: nome,
         senha: senha
+      }
+    }
+    if(!isCad){
+      log()
+    }else{
+      cad()
+    }
+  }
+
+  const log = async () => {
+    try{
+      const UserCredential = await signInWithEmailAndPassword(auth, data.email, data.senha);
+      const user = UserCredential.user
+    }
+    catch(error){
+      setTimeout(() => setErrorEmail(false), 1000)
+      setErrorEmail(true)
+      return
+    }
+  }
+
+  const cad = async () => {
+    try{
+      const UserCredential = await createUserWithEmailAndPassword(auth, data.email, data.senha);
+      const user = UserCredential.user
+
+      await setDoc(doc(db, "users", user.uid),{
+        name: data.nome,
+        email: data.email,
+      })
+    } 
+    catch(error){
+      if (error.code == 'auth/email-already-in-use'){
+        setTimeout(() => setErrorEmail(false), 1000)
+        setErrorEmail(true)
+        return
       }
     }
   }
@@ -179,24 +222,24 @@ function App() {
         <StyledContainer>
           <InputContainer>
             <Input
-              type = 'text'
-              label = 'Nome'
+              type = 'email'
+              label = 'Email'
 
-              error = {errorNome}
-              value = {nome}
-              onChange = {(e) => setNome(e.target.value)}
+              error = {errorEmail}
+              value = {email}
+              onChange = {(e) => setEmail(e.target.value)}
 
             />
             {isCad && (
               <Input
-                type = 'email'
-                label = 'Email'
+                type = 'text'
+                label = 'Nome'
                 isCad = { isCad }
 
 
-                error = {errorEmail}
-                value = {email}
-                onChange = {(e) => setEmail(e.target.value)}
+                error = {errorNome}
+                value = {nome}
+                onChange = {(e) => setNome(e.target.value)}
 
               />
             )}
