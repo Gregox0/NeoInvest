@@ -275,8 +275,8 @@ function App() {
           <P>{ !isCad ? (<>Ainda não tem uma conta? <span onClick = {toggle}>Clique aqui</span></>) : (<>Já tem uma conta? <span onClick = {toggle}>Clique aqui</span></> )}</P>
 
           <LogIcons>
-            // <Google/>
-            // <Twitter/>
+            {/* <Google/>
+               <Twitter/> */}
           </LogIcons>
         </StyledContainer>
       </Wrapper>
