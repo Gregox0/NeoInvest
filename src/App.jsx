@@ -255,6 +255,7 @@ function App() {
         setLoading(false)
       }
     }
+    setLoading(false)
   }, [])
 
 
