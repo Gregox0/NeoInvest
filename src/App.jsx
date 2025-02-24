@@ -235,7 +235,7 @@ function App() {
 
   useEffect(() => {
     const rememberedEmail = localStorage.getItem('rememberedEmail')
-    if(rememberedEmail){
+    if(!rememberedEmail){
       setLoading(true)
       try {
         const checkUser = async () => {
