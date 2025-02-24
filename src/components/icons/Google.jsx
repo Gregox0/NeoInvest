@@ -8,7 +8,7 @@ const StyledSvg = styled.svg`
 
   width: 30px;
   height: 30px;
-  
+
   fill: #ccc;
 
   transition: all ease 0.3s;
@@ -24,7 +24,7 @@ export default function Google() {
         try{
             const result = await signInWithPopup(auth, provider)
             const user = result.user
-            
+
             const userRef = doc(db, 'users', user.uid)
             const userDoc = await getDoc(userRef)
 
@@ -33,14 +33,11 @@ export default function Google() {
                     name: user.displayName,
                     email: user.email,
                 })
-                alert('criado com o google')
             }
             else{
-                alert('logado com o google')
             }
         }
         catch(error){
-            console.error('Erro ao cadastrar com o Google: ', error);
         }
     }
   return (

@@ -1,12 +1,19 @@
 
 import { styled, createGlobalStyle } from 'styled-components'
-import { useState } from 'react'
+import { useState, useEffect  } from 'react'
 
 import Input from './components/Input'
 import Button from './components/Button'
 import ForgotPassword from './components/ForgotPassword'
 import Google from './components/icons/Google'
 import Twitter from './components/icons/Twitter'
+import Loading from './components/Loading.jsx'
+
+import { auth,db } from './firebase.js'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { setDoc, doc, getDocs, query, collection, where } from "firebase/firestore";
+
+import { useNavigate } from 'react-router-dom'
 
 const GlobalStyle = createGlobalStyle`
   @font-face {
@@ -124,6 +131,8 @@ const Wrapper = styled.div`
 
 function App() {
   const [isCad, setIsCad] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
+  const [loading, setLoading] = useState(false)
 
 
   const [errorNome, setErrorNome] = useState(false)
@@ -133,16 +142,21 @@ function App() {
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
-  
+
+  let data
+
   const toggle = () => setIsCad(prev => !prev)
+  const toggleLoading = () => setLoading(prev => !prev)
+
+  const navigate = useNavigate()
 
   const verify = () => {
-    if(nome.length == 0){
+    if(isCad && nome.length == 0){
       setTimeout(() => setErrorNome(false), 1000)
       setErrorNome(true)
       return
     }
-    if(isCad && email.length == 0){
+    if(email.length == 0){
       setTimeout(() => setErrorEmail(false), 1000)
       setErrorEmail(true)
       return
@@ -153,23 +167,105 @@ function App() {
       return
     }
     if(isCad){
-      const data = {
+      data = {
         nome: nome,
         email: email,
         senha: senha
       }
     }else{
-      const data = {
-        nome: nome,
+      data = {
+        email: email,
         senha: senha
       }
     }
+    if(!isCad){
+      log()
+    }else{
+      cad()
+    }
+
+
   }
+
+  const log = async () => {
+    toggleLoading()
+
+    try{
+      const UserCredential = await signInWithEmailAndPassword(auth, data.email, data.senha)
+
+      toggleLoading()
+      navigate('/teste')
+    }
+    catch(error){
+      toggleLoading()
+      setTimeout(() => setErrorEmail(false), 1000)
+      setErrorEmail(true)
+      return
+    }
+
+    if (rememberMe) {
+      localStorage.setItem('rememberedEmail', data.email);
+    }
+  }
+
+  const cad = async () => {
+    toggleLoading()
+    try{
+      const UserCredential = await createUserWithEmailAndPassword(auth, data.email, data.senha);
+      const user = UserCredential.user
+
+      await setDoc(doc(db, "users", user.uid),{
+        name: data.nome,
+        email: data.email,
+      })
+
+      console.log('cadastrado')
+      toggle()
+      toggleLoading()
+    } 
+    catch(error){
+      toggleLoading()
+      if (error.code == 'auth/email-already-in-use'){
+        setTimeout(() => setErrorEmail(false), 1000)
+        setErrorEmail(true)
+        return
+      }
+    }
+  }
+
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem('rememberedEmail')
+    if(rememberedEmail){
+      setLoading(true)
+      try {
+        const checkUser = async () => {
+          const q = query(collection(db, 'users'), where('email', '==', rememberedEmail))
+          const querySnapshot = await getDocs(q)
+
+          if (!querySnapshot.empty) {
+            onAuthStateChanged(auth, (user) => {
+              if(user){
+                navigate('/teste')
+              }
+            })
+          }
+        }
+        checkUser()
+      }catch (error){
+        setLoading(false)
+      }
+    }
+  }, [])
 
 
   return (
     <>
       <GlobalStyle />
+      {
+        loading && (
+          <Loading/>
+        )
+      }
       <Wrapper>
         <StyledTitle>
           <h1>{ !isCad ? (<>Bem-vindo <br/>de volta!</>) : (<>Junte-se <br/> a nós</>) }</h1>
@@ -179,24 +275,24 @@ function App() {
         <StyledContainer>
           <InputContainer>
             <Input
-              type = 'text'
-              label = 'Nome'
+              type = 'email'
+              label = 'Email'
 
-              error = {errorNome}
-              value = {nome}
-              onChange = {(e) => setNome(e.target.value)}
+              error = {errorEmail}
+              value = {email}
+              onChange = {(e) => setEmail(e.target.value)}
 
             />
             {isCad && (
               <Input
-                type = 'email'
-                label = 'Email'
+                type = 'text'
+                label = 'Nome'
                 isCad = { isCad }
 
 
-                error = {errorEmail}
-                value = {email}
-                onChange = {(e) => setEmail(e.target.value)}
+                error = {errorNome}
+                value = {nome}
+                onChange = {(e) => setNome(e.target.value)}
 
               />
             )}
@@ -215,8 +311,8 @@ function App() {
           {!isCad && (
             <Container>
               <InputCheckbox>
-                <label>Lembrar de mim</label>
-                <input type="checkbox" />
+                <label >Lembrar de mim</label>
+                <input type="checkbox" onChange={() => setRememberMe(prev => !prev)} checked={rememberMe}/>
               </InputCheckbox>
               <ForgotPassword/>
             </Container>
@@ -232,7 +328,7 @@ function App() {
           <P>{ !isCad ? (<>Ainda não tem uma conta? <span onClick = {toggle}>Clique aqui</span></>) : (<>Já tem uma conta? <span onClick = {toggle}>Clique aqui</span></> )}</P>
 
           <LogIcons>
-            <Google/>
+            <Google/> 
             <Twitter/>
           </LogIcons>
         </StyledContainer>
