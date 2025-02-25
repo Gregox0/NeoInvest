@@ -197,8 +197,6 @@ function App() {
       const stocks = await fetchUserStocks(user.uid)
       
       if(stocks.length != 0){
-        console.log(stocks[1])
-        console.log(stocks.length)
         navigate('/Home')
         return
       }
