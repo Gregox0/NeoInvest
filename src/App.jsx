@@ -144,7 +144,7 @@ function App() {
   const [senha, setSenha] = useState('')
 
   let data
-
+  
   const toggle = () => setIsCad(prev => !prev)
   const toggleLoading = () => setLoading(prev => !prev)
 
@@ -184,7 +184,7 @@ function App() {
       cad()
     }
 
-
+    
   }
 
   const log = async () => {
@@ -217,6 +217,7 @@ function App() {
       await setDoc(doc(db, "users", user.uid),{
         name: data.nome,
         email: data.email,
+        user: user
       })
       toggle()
       toggleLoading()
@@ -239,7 +240,7 @@ function App() {
         const checkUser = async () => {
           const q = query(collection(db, 'users'), where('email', '==', rememberedEmail))
           const querySnapshot = await getDocs(q)
-
+  
           if (!querySnapshot.empty) {
             onAuthStateChanged(auth, (user) => {
               if(user){
