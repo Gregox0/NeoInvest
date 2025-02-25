@@ -226,7 +226,6 @@ function App() {
       await setDoc(doc(db, "users", user.uid),{
         name: data.nome,
         email: data.email,
-        user: user
       })
       toggle()
       toggleLoading()
