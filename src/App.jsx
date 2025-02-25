@@ -197,6 +197,8 @@ function App() {
       const stocks = await fetchUserStocks(user.uid)
       
       if(stocks.length != 0){
+        console.log(stocks[1])
+        console.log(stocks.length)
         navigate('/Home')
         return
       }
@@ -241,7 +243,7 @@ function App() {
   const fetchUserStocks = async (userId) => {
     setLoading(true)
     try {
-        const response = await fetch(`https://neoinvestserver-production.up.railway.app/stocks?userId=${userId}`)
+        const response = await fetch(`http://neoinvestserver-production.up.railway.app/stocks?userId=${userId}`)
         const data = await response.json()
 
         return data
