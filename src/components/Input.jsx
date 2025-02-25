@@ -64,7 +64,7 @@ const StyledLabel = styled.label`
   `}
 `
 
-export default function Input({ type, onChange, value, label, error }) {
+export default function Input({ type, onChange, value, label, error, onKeyDown }) {
   const [isFocused, setIsFocused] = useState(false)
   const [inputValue, setInputValue] = useState("")
 
@@ -86,6 +86,7 @@ export default function Input({ type, onChange, value, label, error }) {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           onChange = {handleChange}
+          onKeyDown = {onKeyDown}
         />
       </InputContainer>
     </StyledContainer>
