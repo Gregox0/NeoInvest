@@ -1,6 +1,7 @@
 import { styled, createGlobalStyle } from 'styled-components'
 import { useState,useEffect } from 'react'
 import { useAuth } from "../context/AuthContext"
+import { useNavigate } from 'react-router-dom'
 
 import Input from '../components/Input'
 import Table from '../components/Table'
@@ -33,7 +34,9 @@ const Side = styled.div`
 
 const ASide = styled.div`
     margin-top: 5%;
-    width: 500px;
+    @media (min-width: 868px) {
+        width:500px;
+    }
 `
 
 const Title = styled.div`
@@ -43,8 +46,16 @@ const Title = styled.div`
 const StyledContainer = styled.div`
     height: 100vh;
     width: 100vw;
-    display: flex;
-    justify-content: center;
+
+    @media (max-width: 868px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    @media (min-width: 868px) {
+        display: flex;
+        justify-content: center;
+    }
 `
 
 const Cad = styled.div`
@@ -107,6 +118,17 @@ export default function Teste() {
         }
     }
 
+    const handleKeyDown = (e) => {
+        if(e.key == 'Enter'){
+            handleSubmit()
+      
+          e.preventDefault()
+        }
+    }
+    const handle = () => {
+        navigate('/Home')
+    }
+
     useEffect(() => {
         setLoading(true)
         if (userId) {
@@ -128,9 +150,10 @@ export default function Teste() {
                         type='text'
                         value={ticker}
                         onChange={(e) => setTicker(e.target.value)}
+                        onKeyDown = {handleKeyDown}
                     />
                 </Cad>
-                <Button text='Próximo' onClick={handleSubmit} />
+                <Button text='Próximo' onClick = {handle}/>
             </Side>
             <ASide>
                 <Table dados={dados} />
