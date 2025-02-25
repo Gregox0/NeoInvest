@@ -192,8 +192,17 @@ function App() {
 
     try{
       const UserCredential = await signInWithEmailAndPassword(auth, data.email, data.senha)
+      const user = UserCredential.user
 
-      toggleLoading()
+      const stocks = await fetchUserStocks(user.uid)
+      
+      if(stocks.length != 0){
+        console.log(stocks[1])
+        console.log(stocks.length)
+        navigate('/Home')
+        return
+      }
+
       navigate('/ConteMais')
     }
     catch(error){
@@ -231,10 +240,22 @@ function App() {
       }
     }
   }
+  const fetchUserStocks = async (userId) => {
+    setLoading(true)
+    try {
+        const response = await fetch(`http://localhost:5555/stocks?userId=${userId}`)
+        const data = await response.json()
+
+        return data
+    } catch (error) {
+        console.error('Erro ao buscar as ações do usuário:', error)
+    }
+}
 
   useEffect(() => {
     const rememberedEmail = localStorage.getItem('rememberedEmail')
-    if(rememberedEmail){
+    if(!rememberedEmail){
+      
       setLoading(true)
       try {
         const checkUser = async () => {
