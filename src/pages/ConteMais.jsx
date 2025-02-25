@@ -64,7 +64,7 @@ export default function Teste() {
     const handleSubmit = async () => {
         setLoading(true)
         try {
-            const response = await fetch(`http://neoinvestserver-production.up.railway.app/stock/${ticker}?userId=${userId}`)
+            const response = await fetch(`https://neoinvestserver-production.up.railway.app/stock/${ticker}?userId=${userId}`)
             const data = await response.json()
 
 
@@ -88,7 +88,7 @@ export default function Teste() {
     }
     const fetchUserStocks = async () => {       
         try {
-            const response = await fetch(`http://neoinvestserver-production.up.railway.app/stocks?userId=${userId}`)
+            const response = await fetch(`https://neoinvestserver-production.up.railway.app/stocks?userId=${userId}`)
             const data = await response.json()
 
             setDados(prevState => ({
