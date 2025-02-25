@@ -1,10 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { AuthProvider } from "./context/AuthContext.jsx"
 
 import App from './App.jsx'
 import ConteMais from './pages/ConteMais.jsx'
-import { AuthProvider } from "./context/AuthContext.jsx"
+import Home from './pages/Home.jsx'
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: '/ConteMais',
     element: <ConteMais />
+  },
+  {
+    path: '/Home',
+    element: <Home />
   }
 ])
 
