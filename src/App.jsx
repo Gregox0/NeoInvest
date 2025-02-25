@@ -143,6 +143,10 @@ function App() {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
 
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  const senhaRegex = /^.{6,}$/;
+  const nomeRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{3,}$/
+
   let data
   
   const toggle = () => setIsCad(prev => !prev)
@@ -151,17 +155,17 @@ function App() {
   const navigate = useNavigate()
 
   const verify = () => {
-    if(isCad && nome.length == 0){
+    if(isCad && !nomeRegex.test(nome)){
       setTimeout(() => setErrorNome(false), 1000)
       setErrorNome(true)
       return
     }
-    if(email.length == 0){
+    if(!emailRegex.test(email)){
       setTimeout(() => setErrorEmail(false), 1000)
       setErrorEmail(true)
       return
     }
-    if(senha.length == 0){
+    if(!senhaRegex.test(senha)){
       setTimeout(() => setErrorSenha(false), 1000)
       setErrorSenha(true)
       return
