@@ -62,7 +62,7 @@ export default function Teste() {
     const handleSubmit = async () => {
         setLoading(true)
         try {
-            
+            const response = await fetch(`https://neoinvestserver-production.up.railway.app/stock/${ticker}`)
             const data = await response.json()
             console.log(data)
 
