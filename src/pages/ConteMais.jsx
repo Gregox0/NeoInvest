@@ -1,5 +1,5 @@
 import { styled, createGlobalStyle } from 'styled-components'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import { useAuth } from "../context/AuthContext"
 
 import Input from '../components/Input'
@@ -86,6 +86,33 @@ export default function Teste() {
             console.error('Erro ao buscar dados da ação:', error)
         }
     }
+    const fetchUserStocks = async () => {       
+        try {
+            const response = await fetch(`http://localhost:5555/stocks?userId=${userId}`)
+            const data = await response.json()
+
+            setDados(prevState => ({
+                ...prevState,
+                tb: data.map(stock => ({
+                    empresa: stock.companyName,
+                    ticket: stock.symbol,
+                    preco: stock.currentPrice,
+                    variacao: stock.appreciation
+                }))
+            }))
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            console.error('Erro ao buscar as ações do usuário:', error)
+        }
+    }
+
+    useEffect(() => {
+        setLoading(true)
+        if (userId) {
+            fetchUserStocks()
+        }
+    }, [userId])
     return (
         <StyledContainer>
             <GlobalStyle />
