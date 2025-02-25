@@ -72,6 +72,8 @@ export default function Teste() {
         tb: []
     })
 
+    const navigate = useNavigate()
+
     const handleSubmit = async () => {
         setLoading(true)
         try {
