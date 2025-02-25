@@ -1,5 +1,6 @@
 import { styled, createGlobalStyle } from 'styled-components'
 import { useState } from 'react'
+import { useAuth } from "../context/AuthContext"
 
 import Input from '../components/Input'
 import Table from '../components/Table'
@@ -51,6 +52,7 @@ const Cad = styled.div`
 `
 
 export default function Teste() {
+    const { userId } = useAuth()
     const [loading, setLoading] = useState(false)
 
     const [ticker, setTicker] = useState('')
@@ -62,9 +64,8 @@ export default function Teste() {
     const handleSubmit = async () => {
         setLoading(true)
         try {
-            const response = await fetch(`https://neoinvestserver-production.up.railway.app/stock/${ticker}`)
+            const response = await fetch(`http://localhost:5555/stock/${ticker}?userId=${userId}`)
             const data = await response.json()
-            console.log(data)
 
 
             setDados(prevState => ({
@@ -85,7 +86,6 @@ export default function Teste() {
             console.error('Erro ao buscar dados da ação:', error)
         }
     }
-
     return (
         <StyledContainer>
             <GlobalStyle />
